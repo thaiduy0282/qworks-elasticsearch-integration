@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -71,9 +72,12 @@ public class ProductService implements IProductService {
         }
 
         if (criteria.getMinPrice() != null && criteria.getMaxPrice() != null) {
-            boolQuery.filter(f -> f.range(r -> r.field(ProductEntity.Fields.price)
-                    .gte((JsonData) criteria.getMinPrice())
-                    .lte((JsonData) criteria.getMaxPrice())));
+            boolQuery.filter(f ->
+                    f.range(r -> r.field(ProductEntity.Fields.price)
+                            .gte(JsonData.of(criteria.getMinPrice().doubleValue()))
+                            .lte(JsonData.of(criteria.getMaxPrice().doubleValue()))
+                    )
+            );
         } else if (criteria.getMinPrice() != null) {
             boolQuery.filter(f -> f.range(r -> r.field(ProductEntity.Fields.price)
                     .gte((JsonData) criteria.getMinPrice())));
@@ -95,6 +99,15 @@ public class ProductService implements IProductService {
             );
         }
 
+        if (criteria.getFromDate() != null && criteria.getToDate() != null) {
+            boolQuery.filter(f -> f
+                    .range(r -> r.field(ProductEntity.Fields.createdDate)
+                            .gte(JsonData.of(criteria.getFromDate().getTime()))
+                            .lte(JsonData.of(criteria.getToDate().getTime()))
+                    )
+            );
+        }
+
         return boolQuery;
     }
 
@@ -111,6 +124,7 @@ public class ProductService implements IProductService {
     @Override
     public ProductDto create(CreateProductRequest request) {
         ProductEntity entity = ProductMapper.entityFromRequest(request);
+        entity.setCreatedDate(new Date());
         return ProductMapper.dtoFromEntity(productRepository.save(entity));
     }
 
@@ -125,6 +139,7 @@ public class ProductService implements IProductService {
         existedProduct.setPrice(request.price());
         existedProduct.setStatus(request.status());
         existedProduct.setDescription(request.description());
+        existedProduct.setUpdatedDate(new Date());
 
         return ProductMapper.dtoFromEntity(productRepository.save(existedProduct));
     }

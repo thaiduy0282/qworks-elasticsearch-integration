@@ -4,6 +4,7 @@ import com.example.elasticsearch.enumerate.ProductStatus;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -19,5 +20,9 @@ public class ProductCriteria {
     private BigDecimal maxPrice;
 
     private List<ProductStatus> statuses;
+
+    private Date fromDate;
+
+    private Date toDate;
 
 }

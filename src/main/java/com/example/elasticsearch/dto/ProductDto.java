@@ -1,9 +1,12 @@
 package com.example.elasticsearch.dto;
 
 import com.example.elasticsearch.enumerate.ProductStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,5 +23,9 @@ public class ProductDto {
     private String description;
 
     private ProductStatus status;
+
+    private Date createdDate;
+
+    private Date updatedDate;
 
 }

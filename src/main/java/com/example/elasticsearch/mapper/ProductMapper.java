@@ -16,6 +16,8 @@ public class ProductMapper {
                 .price(entity.getPrice())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
+                .createdDate(entity.getCreatedDate())
+                .updatedDate(entity.getUpdatedDate())
                 .build();
     }
 
@@ -26,6 +28,8 @@ public class ProductMapper {
                 .price(entity.getPrice())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
+                .createdDate(entity.getCreatedDate())
+                .updatedDate(entity.getUpdatedDate())
                 .build();
     }
 
